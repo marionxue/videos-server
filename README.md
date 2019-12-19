@@ -15,7 +15,7 @@
 
 ## 评论
 - show comments: URL:/videos/:vid-id/comments Method: GET, SC:200,400,500
-- delete a comment: URL:/videos/:vid-id/comment/:comment-id Method: DELETE SC:204,400,401,403,500
+- delete a comment: URL:/videos/:vid-id/comment/:comment-id Method: TE SC:204,400,401,403,500
 - post a comment: URL:/videos/:vid-id/comments Method:POST SC:201,400,500
 
 ## project layer
