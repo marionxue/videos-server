@@ -33,3 +33,26 @@
 
 ```
 
+
+## logic
+```bash
+
+handler -> validation{1.request,2.user} -> business logic -> response
+```
+
+1. data model
+2. error handling
+
+
+## database design
+```mysql
+create table `t_user`(
+`id` int unsigned not null AUTO_INCREMENT comment '用户id',
+`login_name` varchar(64) not null comment '用户登录名',
+`pwd` text comment '密码'
+`deleted` tinyint(1) default 0 comment '是否删除',
+`create_datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+`update_datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
+primary key (`id`),unique inx_user(`login_name`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 comment='用户表';
+```
