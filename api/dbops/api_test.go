@@ -1,11 +1,14 @@
 package dbops
 
 import (
+	"fmt"
+	"strconv"
 	"testing"
+	"time"
 )
 
 //init(dblogin, truncate table) -> run tests -> clear data(truncate tables)
-var tempvid int
+var tempvid string
 
 func clearTables() {
 	dbConn.Exec("truncate t_comments")
@@ -27,12 +30,13 @@ func TestUserWorkFlow(t *testing.T) {
 	t.Run("ReGet", testRegetUser)
 }
 
-func TestVideoWorkFlow(t *testing.T){
-	t.Run("PrepareUser",testAddUser)
-	t.Run("AddVideo",testAddVideoInfo)
-	t.Run("GetVideo",testGetVideoInfo)
-	t.Run("DelVideo",testDeleteVideoInfo)
-	t.Run("RegetVideo",testRegetVideoInfo)
+func TestVideoWorkFlow(t *testing.T) {
+	clearTables()
+	t.Run("PrepareUser", testAddUser)
+	t.Run("AddVideo", testAddVideoInfo)
+	t.Run("GetVideo", testGetVideoInfo)
+	t.Run("DelVideo", testDeleteVideoInfo)
+	t.Run("RegetVideo", testRegetVideoInfo)
 
 }
 
@@ -65,31 +69,61 @@ func testRegetUser(t *testing.T) {
 	}
 }
 
-func testAddVideoInfo(t *testing.T){
-	vi,err:=AddNewVideo(1,"中国机长")
-	if err!=nil{
-		t.Errorf("Error of AddVideoInfo: %v",err)
+func testAddVideoInfo(t *testing.T) {
+	vi, err := AddNewVideo(1, "中国机长")
+	if err != nil {
+		t.Errorf("Error of AddVideoInfo: %v", err)
 	}
 	tempvid = vi.Id
 }
 
-func testGetVideoInfo(t *testing.T){
-	_,err:= GetVideoInfo(tempvid)
-	if err!=nil{
-		t.Errorf("Error of GetVideoInfo: %v",err)
+func testGetVideoInfo(t *testing.T) {
+	_, err := GetVideoInfo(tempvid)
+	if err != nil {
+		t.Errorf("Error of GetVideoInfo: %v", err)
 	}
 }
-func testDeleteVideoInfo(t *testing.T){
-	err:= DeleteVideoInfo(tempvid)
-	if err!=nil{
-		t.Errorf("Error of DeleteVideoInfo: %v",err)
+func testDeleteVideoInfo(t *testing.T) {
+	err := DeleteVideoInfo(tempvid)
+	if err != nil {
+		t.Errorf("Error of DeleteVideoInfo: %v", err)
 	}
 }
 
+func testRegetVideoInfo(t *testing.T) {
+	vi, err := GetVideoInfo(tempvid)
+	if err != nil || vi != nil {
+		t.Errorf("Error of RegetVideoInfo: %v", err)
+	}
+}
 
-func testRegetVideoInfo(t *testing.T){
-	vi,err:=GetVideoInfo(tempvid)
-	if err!=nil || vi!=nil{
-		t.Errorf("Error of RegetVideoInfo: %v",err)
+func TestListCommentsWorkFlow(t *testing.T) {
+	clearTables()
+	t.Run("AddUser", testAddUser)
+	t.Run("AddComments", testAddComments)
+	t.Run("ListComments", testListComments)
+}
+
+func testAddComments(t *testing.T) {
+	vid := "12345"
+	aid := 1
+	content := "I love yatou."
+	err := AddNewComments(vid, content, aid)
+	if err != nil {
+		t.Errorf("Error of AddComments: %v", err)
+	}
+}
+
+func testListComments(t *testing.T) {
+	vid := "12345"
+	from := 1514764800
+	to,_:=strconv.Atoi(strconv.FormatInt(time.Now().UnixNano()/1000000000,10))
+	res,err:= ListComments(vid,from,to)
+	if err!=nil{
+		t.Errorf("Error of ListComments: %v",err)
+	}
+
+	for i,ele:= range res{
+		fmt.Printf("Comment: %d,%v,\n",i,ele)
 	}
 }
