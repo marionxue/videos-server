@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 )
@@ -8,8 +9,8 @@ import (
 func RegisterHandlers() *httprouter.Router {
 	router := httprouter.New()
 
-	router.POST("/user", CreateUser)
-	router.POST("/user/:user_name", Login)
+	router.POST("/user", github_com.CreateUser)
+	router.POST("/user/:user_name", github_com.Login)
 
 	return router
 }

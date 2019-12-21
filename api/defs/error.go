@@ -7,10 +7,10 @@ type Err struct {
 
 type ErroResponse struct {
 	HttpSC int
-	Error Err
+	Error  Err
 }
 
 var (
-	ErrorRequestBodyParseFailed = ErroResponse{HttpSC:400,Error: Err{Error:"Request body is not correct",ErrorCode: "001"}}
-	ErrorNotAuthUser = ErroResponse{HttpSC:401,Error:Err{Error:"User authentication failed.",ErrorCode:"002"}}
+	ErrorRequestBodyParseFailed = ErroResponse{HttpSC: 400, Error: Err{Error: "Request body is not correct", ErrorCode: "001"}}
+	ErrorNotAuthUser            = ErroResponse{HttpSC: 401, Error: Err{Error: "User authentication failed.", ErrorCode: "002"}}
 )
